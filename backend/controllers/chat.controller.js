@@ -139,15 +139,17 @@ export const sendMessage = async (req, res) => {
     // Get the newly added message
     const newMessage = chat.messages[chat.messages.length - 1];
 
-    // Emit socket event
+    // Emit socket event when Socket.IO is available
     const io = req.app.get("io");
     const recipientId = chat.participants.find(
       (id) => id.toString() !== req.user._id.toString()
     );
-    io.to(recipientId.toString()).emit("new_message", {
-      chatId: chat._id,
-      message: newMessage,
-    });
+    if (io && typeof io.to === "function") {
+      io.to(recipientId.toString()).emit("new_message", {
+        chatId: chat._id,
+        message: newMessage,
+      });
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
