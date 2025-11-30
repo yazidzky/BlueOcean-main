@@ -40,23 +40,20 @@ const parseAllowedOrigins = () => {
 
 const allowedOrigins = parseAllowedOrigins();
 
-let io = null;
-if (!process.env.VERCEL) {
-  io = new Server(httpServer, {
-    cors: {
-      origin: (origin, callback) => {
-        const normalize = (u) => (u && u.endsWith("/") ? u.slice(0, -1) : u);
-        const o = normalize(origin);
-        if (!o || allowedOrigins.includes(o)) {
-          return callback(null, true);
-        }
-        return callback(new Error("Not allowed by CORS"));
-      },
-      methods: ["GET", "POST"],
-      credentials: true,
+const io = new Server(httpServer, {
+  cors: {
+    origin: (origin, callback) => {
+      const normalize = (u) => (u && u.endsWith("/") ? u.slice(0, -1) : u);
+      const o = normalize(origin);
+      if (!o || allowedOrigins.includes(o)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
     },
-  });
-}
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
 
 // Connect to MongoDB
 connectDB();
@@ -98,17 +95,13 @@ app.get("/api/health", (req, res) => {
 app.use(errorHandler);
 
 // Setup Socket.IO handlers
-if (io) {
-  setupSocketHandlers(io);
-}
+setupSocketHandlers(io);
 
 // Start server
 const PORT = process.env.PORT || 5000;
-if (!process.env.VERCEL) {
-  httpServer.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV}`);
-  });
-}
+httpServer.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+});
 
 export default app;
