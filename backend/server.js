@@ -28,6 +28,8 @@ const parseAllowedOrigins = () => {
     client,
     "http://localhost:4173",
     "http://localhost:8080",
+    "https://blue-ocean-main-lrwe.vercel.app",
+    "https://blue-ocean-main.vercel.app",
   ];
   const items = envList
     .split(",")
@@ -89,6 +91,11 @@ app.use("/api/stats", statsRoutes);
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "Server is running" });
+});
+
+// Root route
+app.get("/", (req, res) => {
+  res.json({ status: "OK", routes: ["/api/health", "/api/auth", "/api/users", "/api/tasks", "/api/friends", "/api/chats", "/api/stats"] });
 });
 
 // Error handling middleware
