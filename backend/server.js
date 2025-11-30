@@ -42,14 +42,24 @@ const parseAllowedOrigins = () => {
 
 const allowedOrigins = parseAllowedOrigins();
 
+const isOriginAllowed = (origin) => {
+  const normalize = (u) => (u && u.endsWith("/") ? u.slice(0, -1) : u);
+  const o = normalize(origin);
+  if (!o) return true;
+  if (allowedOrigins.includes(o)) return true;
+  const allowPreview = (process.env.ALLOW_VERCEL_PREVIEW || "false").toLowerCase() === "true";
+  if (allowPreview) {
+    const isVercel = /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(o);
+    const matchesProject = ["blue-ocean-main", "blue-ocean-main-lrwe"].some((p) => o.includes(p));
+    if (isVercel && matchesProject) return true;
+  }
+  return false;
+};
+
 const io = new Server(httpServer, {
   cors: {
     origin: (origin, callback) => {
-      const normalize = (u) => (u && u.endsWith("/") ? u.slice(0, -1) : u);
-      const o = normalize(origin);
-      if (!o || allowedOrigins.includes(o)) {
-        return callback(null, true);
-      }
+      if (isOriginAllowed(origin)) return callback(null, true);
       return callback(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST"],
@@ -64,11 +74,7 @@ connectDB();
 app.use(
   cors({
     origin: (origin, callback) => {
-      const normalize = (u) => (u && u.endsWith("/") ? u.slice(0, -1) : u);
-      const o = normalize(origin);
-      if (!o || allowedOrigins.includes(o)) {
-        return callback(null, true);
-      }
+      if (isOriginAllowed(origin)) return callback(null, true);
       return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,

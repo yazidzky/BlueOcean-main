@@ -7,9 +7,10 @@ import generateToken from "../utils/generateToken.js";
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    const emailLower = (email || "").toLowerCase();
 
     // Check if user exists
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: emailLower });
 
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
@@ -19,7 +20,7 @@ export const register = async (req, res) => {
     const now = new Date();
     const user = await User.create({
       name,
-      email,
+      email: emailLower,
       password,
       status: "online",
       lastLoginAt: now,
@@ -48,9 +49,10 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const emailLower = (email || "").toLowerCase();
 
     // Check for user email
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email: emailLower }).select("+password");
 
     if (user && (await user.comparePassword(password))) {
       // Update status to online and streak
