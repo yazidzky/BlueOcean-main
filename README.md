@@ -1,363 +1,168 @@
-# BlueOcean - Aplikasi Manajemen Tugas & Kolaborasi
+# 🌊 BlueOcean - Task Management & Social Networking Platform
 
-![BlueOcean Banner](https://img.shields.io/badge/BlueOcean-Task%20Management-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)
-![License](https://img.shields.io/badge/License-ISC-yellow?style=for-the-badge)
-
-BlueOcean adalah aplikasi web full-stack modern yang menggabungkan manajemen tugas produktif dengan fitur jejaring sosial. Aplikasi ini memungkinkan pengguna untuk mengelola tugas harian mereka sambil terhubung dengan teman-teman untuk kolaborasi dan motivasi.
-
----
+BlueOcean adalah aplikasi web Progressive Web App (PWA) yang menggabungkan manajemen tugas dengan fitur jejaring sosial. Aplikasi ini memungkinkan pengguna untuk mengelola tugas, berkolaborasi dengan teman, dan berkomunikasi secara real-time.
 
 ## 📋 Daftar Isi
 
 - [Fitur Utama](#-fitur-utama)
-- [Teknologi yang Digunakan](#️-teknologi-yang-digunakan)
-- [Arsitektur Aplikasi](#-arsitektur-aplikasi)
-- [Database Schema](#-database-schema)
-- [Cara Instalasi](#-cara-instalasi)
+- [Teknologi Stack](#-teknologi-stack)
+- [Arsitektur Sistem](#-arsitektur-sistem)
+- [Prasyarat](#-prasyarat)
+- [Instalasi & Setup](#-instalasi--setup)
 - [Konfigurasi Environment](#-konfigurasi-environment)
-- [API Documentation](#-api-documentation)
-- [Socket.IO Events](#-socketio-events)
-- [Fitur PWA](#-fitur-pwa-progressive-web-app)
-- [Deployment](#-deployment)
-- [Panduan Pengembangan](#-panduan-pengembangan)
+- [Menjalankan Aplikasi](#-menjalankan-aplikasi)
+- [Deployment ke VPS/Cloud](#-deployment-ke-vpscloud)
+- [Struktur Database](#-struktur-database)
+- [API Endpoints](#-api-endpoints)
+- [WebSocket Events](#-websocket-events)
+- [PWA Features](#-pwa-features)
 - [Testing](#-testing)
 - [Troubleshooting](#-troubleshooting)
 - [Kontribusi](#-kontribusi)
 - [Lisensi](#-lisensi)
 
----
+## ✨ Fitur Utama
 
-## 🌟 Fitur Utama
-
-### 📋 Manajemen Tugas
-- ✅ **CRUD Tugas Lengkap**: Buat, baca, update, dan hapus tugas dengan mudah
-- 🎯 **Sistem Prioritas**: Atur prioritas tugas (rendah, sedang, tinggi)
-- 📅 **Tanggal Jatuh Tempo**: Tetapkan deadline untuk setiap tugas
-- ✔️ **Status Completion**: Tandai tugas sebagai selesai/belum selesai
-- 📊 **Statistik Produktivitas**: Lihat progress dan pencapaian Anda
+### 🎯 Manajemen Tugas
+- ✅ Buat, edit, dan hapus tugas
+- 📅 Set tanggal jatuh tempo
+- 🎨 Prioritas tugas (Low, Medium, High)
+- ✔️ Tandai tugas sebagai selesai
+- 📊 Dashboard statistik tugas
 
 ### 👥 Jejaring Sosial
-- 🤝 **Sistem Pertemanan**: Kirim, terima, atau tolak permintaan pertemanan
-- 🟢 **Status Real-time**: Indikator status pengguna (online, offline, away)
-- 👤 **Profil Pengguna**: Kelola bio, avatar, dan minat pribadi
-- 🏆 **Gamifikasi**: Sistem poin dan streak harian untuk meningkatkan motivasi
-- 🔍 **Pencarian Pengguna**: Temukan dan tambahkan teman baru
+- 🤝 Sistem pertemanan (kirim/terima permintaan teman)
+- 💬 Chat real-time dengan teman
+- 👤 Profil pengguna dengan avatar
+- 🎯 Sistem poin dan streak
+- 🔍 Cari pengguna lain
 
-### 💬 Chat Real-time
-- ⚡ **Instant Messaging**: Chat langsung dengan teman menggunakan Socket.IO
-- 🔔 **Notifikasi Real-time**: Dapatkan notifikasi pesan instan
-- 💾 **Riwayat Chat**: Semua percakapan tersimpan di database
-- ⌨️ **Typing Indicator**: Lihat ketika teman sedang mengetik
-- 📱 **Responsive Chat UI**: Interface chat yang smooth di semua device
+### 🔐 Autentikasi & Keamanan
+- 🔒 Registrasi dan login dengan JWT
+- 🛡️ Password hashing dengan bcrypt
+- 🔑 Protected routes
+- 👁️ Status online/offline real-time
 
-### 📊 Statistik & Analytics
-- 📈 **Dashboard Komprehensif**: Visualisasi data produktivitas
-- 🎯 **Task Completion Rate**: Persentase tugas yang diselesaikan
-- 🔥 **Streak Tracking**: Lacak konsistensi harian Anda
-- 🏅 **Point System**: Kumpulkan poin dari aktivitas produktif
-- 📉 **Trend Analysis**: Lihat pola produktivitas Anda
+### 📱 Progressive Web App (PWA)
+- 📲 Dapat diinstall di perangkat
+- 🔄 Offline support dengan Service Worker
+- 💾 Caching strategi untuk performa optimal
+- 🔔 Push notifications
+- 📶 Background sync untuk operasi offline
 
----
+### 🌐 Real-time Features
+- ⚡ WebSocket untuk komunikasi real-time
+- 💬 Typing indicators
+- 🟢 Status online/offline
+- 📨 Instant message delivery
 
-## 🛠️ Teknologi yang Digunakan
+## 🛠 Teknologi Stack
 
-### Backend Stack
-| Teknologi | Versi | Fungsi |
-|-----------|-------|--------|
-| **Node.js** | Latest | Runtime JavaScript server-side |
-| **Express.js** | ^4.21.2 | Framework web minimal dan fleksibel |
-| **MongoDB** | ^8.10.1 | Database NoSQL untuk penyimpanan data |
-| **Mongoose** | ^8.10.1 | ODM (Object Data Modeling) untuk MongoDB |
-| **Socket.IO** | ^4.8.1 | Library untuk komunikasi real-time bidirectional |
-| **JWT** | ^9.0.2 | JSON Web Token untuk autentikasi stateless |
-| **bcryptjs** | ^2.4.3 | Library untuk hashing password |
-| **Cloudinary** | ^2.8.0 | Cloud storage untuk media files |
-| **CORS** | ^2.8.5 | Middleware untuk Cross-Origin Resource Sharing |
-| **dotenv** | ^16.4.5 | Manajemen environment variables |
+### Frontend
+- **Framework**: React 19.2.0 + TypeScript
+- **Build Tool**: Vite 7.2.4
+- **Routing**: React Router DOM 6.26.2
+- **State Management**: TanStack React Query 5.55.4
+- **UI Components**: Radix UI + Tailwind CSS 3.4.18
+- **Real-time**: Socket.IO Client 4.8.1
+- **HTTP Client**: Axios 1.7.7
+- **Forms**: React Hook Form 7.53.0
+- **Charts**: Recharts 2.12.7
+- **Icons**: Lucide React 0.468.0
+- **Notifications**: Sonner 1.5.0
 
-### Frontend Stack
-| Teknologi | Versi | Fungsi |
-|-----------|-------|--------|
-| **React** | ^19.2.0 | Library UI untuk membangun user interface |
-| **TypeScript** | ~5.9.3 | Superset JavaScript dengan type safety |
-| **Vite** | ^7.2.4 | Build tool modern dan cepat |
-| **TailwindCSS** | ^3.4.18 | Utility-first CSS framework |
-| **Radix UI** | Latest | Komponen UI primitif yang accessible |
-| **React Query** | ^5.55.4 | Library untuk data fetching dan caching |
-| **React Router** | ^6.26.2 | Routing library untuk React |
-| **Socket.IO Client** | ^4.8.1 | Client library untuk Socket.IO |
-| **Recharts** | ^2.12.7 | Library untuk visualisasi data |
-| **Lucide React** | ^0.468.0 | Icon library modern |
-| **React Hook Form** | ^7.53.0 | Form validation library |
-| **Sonner** | ^1.5.0 | Toast notification library |
+### Backend
+- **Runtime**: Node.js
+- **Framework**: Express.js 4.21.2
+- **Database**: MongoDB + Mongoose 8.10.1
+- **Authentication**: JWT (jsonwebtoken 9.0.2)
+- **Password Hashing**: bcryptjs 2.4.3
+- **Real-time**: Socket.IO 4.8.1
+- **File Upload**: Cloudinary 2.8.0
+- **CORS**: cors 2.8.5
+- **Environment**: dotenv 16.4.5
 
----
+### DevOps & Tools
+- **Version Control**: Git
+- **Package Manager**: npm/pnpm
+- **Linting**: ESLint
+- **Type Checking**: TypeScript 5.9.3
 
-## 🏗️ Arsitektur Aplikasi
-
-### Struktur Proyek
-
-```
-BlueOcean-main/
-│
-├── backend/                      # Server-side application
-│   ├── config/
-│   │   └── database.js          # MongoDB connection configuration
-│   │
-│   ├── controllers/             # Request handlers
-│   │   ├── auth.controller.js   # Authentication logic
-│   │   ├── chat.controller.js   # Chat management
-│   │   ├── friend.controller.js # Friend system logic
-│   │   ├── stats.controller.js  # Statistics calculation
-│   │   ├── task.controller.js   # Task CRUD operations
-│   │   └── user.controller.js   # User profile management
-│   │
-│   ├── middleware/              # Express middleware
-│   │   ├── auth.middleware.js   # JWT verification
-│   │   └── error.middleware.js  # Global error handler
-│   │
-│   ├── models/                  # MongoDB schemas
-│   │   ├── Chat.model.js        # Chat message schema
-│   │   ├── Task.model.js        # Task schema
-│   │   └── User.model.js        # User schema with relations
-│   │
-│   ├── routes/                  # API route definitions
-│   │   ├── auth.routes.js       # /api/auth endpoints
-│   │   ├── chat.routes.js       # /api/chats endpoints
-│   │   ├── friend.routes.js     # /api/friends endpoints
-│   │   ├── stats.routes.js      # /api/stats endpoints
-│   │   ├── task.routes.js       # /api/tasks endpoints
-│   │   └── user.routes.js       # /api/users endpoints
-│   │
-│   ├── socket/                  # Socket.IO handlers
-│   │   └── handlers.js          # Real-time event handlers
-│   │
-│   ├── utils/                   # Utility functions
-│   │   └── generateToken.js     # JWT token generation
-│   │
-│   ├── .env                     # Environment variables (not in repo)
-│   ├── package.json             # Backend dependencies
-│   └── server.js                # Application entry point
-│
-└── frontend/                    # Client-side application
-    ├── public/                  # Static assets
-    │   └── vite.svg            # Default Vite logo
-    │
-    ├── src/
-    │   ├── assets/             # Images, fonts, etc.
-    │   │
-    │   ├── components/         # Reusable React components
-    │   │   ├── ui/            # Radix UI components
-    │   │   ├── Layout.tsx     # Main layout wrapper
-    │   │   ├── Navbar.tsx     # Navigation bar
-    │   │   └── ...            # Other components
-    │   │
-    │   ├── contexts/          # React Context providers
-    │   │   ├── AuthContext.tsx    # Authentication state
-    │   │   └── ThemeProvider.tsx  # Theme management
-    │   │
-    │   ├── hooks/             # Custom React hooks
-    │   │   ├── useAuth.ts     # Authentication hook
-    │   │   ├── useSocket.ts   # Socket.IO hook
-    │   │   └── ...            # Other custom hooks
-    │   │
-    │   ├── lib/               # Utility functions
-    │   │   ├── api.ts         # Axios instance & API calls
-    │   │   └── utils.ts       # Helper functions
-    │   │
-    │   ├── pages/             # Page components
-    │   │   ├── Landing.tsx    # Landing page
-    │   │   ├── Login.tsx      # Login page
-    │   │   ├── Register.tsx   # Registration page
-    │   │   ├── Dashboard.tsx  # Main dashboard
-    │   │   ├── Tasks.tsx      # Task management page
-    │   │   ├── Friends.tsx    # Friends list page
-    │   │   ├── Chat.tsx       # Chat interface
-    │   │   ├── Profile.tsx    # User profile page
-    │   │   └── NotFound.tsx   # 404 page
-    │   │
-    │   ├── types/             # TypeScript type definitions
-    │   │   └── index.ts       # Global types
-    │   │
-    │   ├── App.tsx            # Root component
-    │   ├── main.tsx           # Application entry point
-    │   └── index.css          # Global styles
-    │
-    ├── .env                   # Frontend environment variables
-    ├── components.json        # Shadcn UI configuration
-    ├── index.html             # HTML template
-    ├── package.json           # Frontend dependencies
-    ├── tailwind.config.cjs    # TailwindCSS configuration
-    ├── tsconfig.json          # TypeScript configuration
-    ├── vite.config.ts         # Vite configuration
-    └── vercel.json            # Vercel deployment config
-```
-
-### Arsitektur Backend
+## 🏗 Arsitektur Sistem
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        Client Layer                          │
-│  (React Frontend, Mobile Apps, Third-party Clients)         │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     API Gateway Layer                        │
+│                         Client Layer                         │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │ CORS Middleware │ Auth Middleware │ Error Handler  │      │
+│  │   Browser    │  │    Mobile    │  │   Desktop    │      │
+│  │   (PWA)      │  │   (PWA)      │  │   (PWA)      │      │
 │  └──────────────┘  └──────────────┘  └──────────────┘      │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Route Layer                             │
-│  /api/auth  /api/users  /api/tasks  /api/friends  /api/chats│
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   Controller Layer                           │
-│  Business Logic & Request/Response Handling                  │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     Model Layer                              │
-│  MongoDB Schemas & Data Validation                           │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                     ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   Database Layer                             │
-│  MongoDB (Collections: users, tasks, chats)                  │
 └─────────────────────────────────────────────────────────────┘
-
+                            ↕ HTTPS/WSS
 ┌─────────────────────────────────────────────────────────────┐
-│                  Real-time Layer (Parallel)                  │
-│  Socket.IO Server ←→ Socket Handlers ←→ Connected Clients   │
+│                      Application Layer                       │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │              React Frontend (Vite)                   │   │
+│  │  ├─ Components (Radix UI + Tailwind)                 │   │
+│  │  ├─ Pages (Dashboard, Tasks, Chat, Profile)          │   │
+│  │  ├─ Contexts (Auth, Theme)                           │   │
+│  │  ├─ Hooks (Custom React Hooks)                       │   │
+│  │  └─ Service Worker (PWA)                             │   │
+│  └──────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            ↕ REST API / WebSocket
+┌─────────────────────────────────────────────────────────────┐
+│                       Backend Layer                          │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │           Express.js Server + Socket.IO              │   │
+│  │  ├─ Routes (Auth, Users, Tasks, Friends, Chat)       │   │
+│  │  ├─ Controllers (Business Logic)                     │   │
+│  │  ├─ Middleware (Auth, Error Handling)                │   │
+│  │  ├─ Socket Handlers (Real-time Events)               │   │
+│  │  └─ Utils (Helpers, Validators)                      │   │
+│  └──────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            ↕ Mongoose ODM
+┌─────────────────────────────────────────────────────────────┐
+│                       Database Layer                         │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │                    MongoDB                           │   │
+│  │  ├─ Users Collection                                 │   │
+│  │  ├─ Tasks Collection                                 │   │
+│  │  ├─ Chats Collection                                 │   │
+│  │  └─ Indexes (Performance Optimization)               │   │
+│  └──────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            ↕
+┌─────────────────────────────────────────────────────────────┐
+│                    External Services                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Cloudinary  │  │   DiceBear   │  │    Email     │      │
+│  │ (File Upload)│  │  (Avatars)   │  │   Service    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Flow Autentikasi
+## 📦 Prasyarat
 
-```
-┌──────────┐                                      ┌──────────┐
-│  Client  │                                      │  Server  │
-└────┬─────┘                                      └────┬─────┘
-     │                                                 │
-     │  POST /api/auth/register                       │
-     │  { name, email, password }                     │
-     ├────────────────────────────────────────────────>
-     │                                                 │
-     │                    Validate Input               │
-     │                    Hash Password                │
-     │                    Create User in DB            │
-     │                    Generate JWT Token           │
-     │                                                 │
-     │  { user, token }                               │
-     <────────────────────────────────────────────────┤
-     │                                                 │
-     │  Store token in localStorage                    │
-     │                                                 │
-     │  GET /api/auth/me                              │
-     │  Headers: { Authorization: Bearer <token> }    │
-     ├────────────────────────────────────────────────>
-     │                                                 │
-     │                    Verify JWT                   │
-     │                    Fetch User from DB           │
-     │                                                 │
-     │  { user }                                      │
-     <────────────────────────────────────────────────┤
-     │                                                 │
+Sebelum memulai, pastikan sistem Anda memiliki:
+
+- **Node.js** >= 18.0.0
+- **npm** >= 9.0.0 atau **pnpm** >= 8.0.0
+- **MongoDB** >= 6.0 (lokal atau cloud seperti MongoDB Atlas)
+- **Git** untuk version control
+- **Text Editor** (VS Code, Sublime, dll)
+
+### Verifikasi Instalasi
+
+```bash
+node --version    # Harus >= v18.0.0
+npm --version     # Harus >= 9.0.0
+mongo --version   # Harus >= 6.0
+git --version     # Versi terbaru
 ```
 
----
-
-## 💾 Database Schema
-
-### User Collection
-
-```javascript
-{
-  _id: ObjectId,
-  name: String (required, max 50 chars),
-  email: String (required, unique, lowercase),
-  password: String (required, hashed, min 6 chars),
-  avatar: String (default: DiceBear avatar),
-  status: String (enum: ['online', 'offline', 'away']),
-  bio: String (max 500 chars),
-  interests: [String],
-  points: Number (default: 0),
-  streakDays: Number (default: 0),
-  lastLoginAt: Date,
-  friends: [ObjectId] (ref: User),
-  friendRequests: [
-    {
-      from: ObjectId (ref: User),
-      status: String (enum: ['pending', 'accepted', 'rejected']),
-      createdAt: Date
-    }
-  ],
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-**Indexes:**
-- `email`: unique index untuk login cepat
-- `friends`: index untuk query pertemanan
-
-### Task Collection
-
-```javascript
-{
-  _id: ObjectId,
-  user: ObjectId (ref: User, required),
-  title: String (required, max 200 chars),
-  description: String (max 1000 chars),
-  completed: Boolean (default: false),
-  priority: String (enum: ['low', 'medium', 'high']),
-  dueDate: Date,
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-**Indexes:**
-- `user + completed`: compound index untuk filter tugas
-- `user + dueDate`: compound index untuk sorting by deadline
-
-### Chat Collection
-
-```javascript
-{
-  _id: ObjectId,
-  sender: ObjectId (ref: User, required),
-  receiver: ObjectId (ref: User, required),
-  message: String (required, max 1000 chars),
-  read: Boolean (default: false),
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-**Indexes:**
-- `sender + receiver`: compound index untuk query chat history
-- `createdAt`: index untuk sorting chronological
-
----
-
-## 🚀 Cara Instalasi
-
-### Prasyarat
-
-Pastikan sistem Anda memiliki:
-- **Node.js** v16.0.0 atau lebih tinggi ([Download](https://nodejs.org/))
-- **MongoDB** v5.0 atau lebih tinggi ([Download](https://www.mongodb.com/try/download/community))
-- **npm** v8.0.0 atau **pnpm** v8.0.0
-- **Git** untuk cloning repository
+## 🚀 Instalasi & Setup
 
 ### 1. Clone Repository
 
@@ -369,10 +174,7 @@ cd BlueOcean-main
 ### 2. Setup Backend
 
 ```bash
-# Masuk ke folder backend
 cd backend
-
-# Install dependencies
 npm install
 # atau
 pnpm install
@@ -381,35 +183,11 @@ pnpm install
 ### 3. Setup Frontend
 
 ```bash
-# Buka terminal baru, masuk ke folder frontend
-cd frontend
-
-# Install dependencies
+cd ../frontend
 npm install
 # atau
 pnpm install
 ```
-
-### 4. Setup Database
-
-**Opsi A: MongoDB Local**
-```bash
-# Jalankan MongoDB service
-sudo systemctl start mongod  # Linux
-brew services start mongodb-community  # macOS
-net start MongoDB  # Windows
-
-# MongoDB akan berjalan di mongodb://localhost:27017
-```
-
-**Opsi B: MongoDB Atlas (Cloud)**
-1. Buat akun di [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Buat cluster baru
-3. Whitelist IP address Anda
-4. Dapatkan connection string
-5. Gunakan connection string di `.env`
-
----
 
 ## ⚙️ Konfigurasi Environment
 
@@ -419,31 +197,34 @@ Buat file `.env` di folder `backend/`:
 
 ```env
 # Server Configuration
-PORT=5000
 NODE_ENV=development
+PORT=5000
 
 # Database Configuration
-MONGODB_URI=mongodb://localhost:27017/blueocean
-# Atau untuk MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/blueocean?retryWrites=true&w=majority
+MONGODB_URI=mongodb://localhost:27017/oceanbluee
+# Atau gunakan MongoDB Atlas:
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/oceanbluee?retryWrites=true&w=majority
+MONGODB_DB=oceanbluee
 
 # JWT Configuration
-JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
+JWT_SECRET=your_super_secret_jwt_key_here_change_in_production
 JWT_EXPIRE=30d
 
-# Frontend URL (untuk CORS)
+# CORS Configuration
 CLIENT_URL=http://localhost:5173
-
-# Allowed Origins (comma-separated)
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173,http://localhost:8080
-
-# Vercel Preview Deployment
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
 ALLOW_VERCEL_PREVIEW=false
 
-# Cloudinary Configuration (Optional - untuk upload gambar)
+# Cloudinary Configuration (Optional - untuk upload file)
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
+
+# Email Configuration (Optional - untuk notifikasi)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASSWORD=your_app_password
 ```
 
 ### Frontend Environment Variables
@@ -452,86 +233,539 @@ Buat file `.env` di folder `frontend/`:
 
 ```env
 # API Configuration
-VITE_API_URL=http://localhost:5000/api
-
-# Socket.IO Configuration
-VITE_SOCKET_URL=http://localhost:5000
+VITE_API_URL=http://localhost:5000
+VITE_WS_URL=http://localhost:5000
 
 # App Configuration
 VITE_APP_NAME=BlueOcean
 VITE_APP_VERSION=1.0.0
 ```
 
-### Environment Variables untuk Production
+### Environment untuk Production
 
-**Backend (.env.production):**
+Untuk production, gunakan nilai yang lebih aman:
+
+**Backend `.env.production`:**
 ```env
-PORT=5000
 NODE_ENV=production
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/blueocean
-JWT_SECRET=production_secret_key_very_long_and_random
-CLIENT_URL=https://your-frontend-domain.com
-ALLOWED_ORIGINS=https://your-frontend-domain.com
-CLOUDINARY_CLOUD_NAME=your_cloud
-CLOUDINARY_API_KEY=your_key
-CLOUDINARY_API_SECRET=your_secret
+PORT=5000
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/oceanbluee
+JWT_SECRET=generate_a_very_strong_random_secret_key
+JWT_EXPIRE=7d
+CLIENT_URL=https://yourdomain.com
+ALLOWED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+ALLOW_VERCEL_PREVIEW=false
 ```
 
-**Frontend (.env.production):**
+**Frontend `.env.production`:**
 ```env
-VITE_API_URL=https://your-backend-domain.com/api
-VITE_SOCKET_URL=https://your-backend-domain.com
+VITE_API_URL=https://api.yourdomain.com
+VITE_WS_URL=https://api.yourdomain.com
 ```
-
----
 
 ## 🏃 Menjalankan Aplikasi
 
 ### Development Mode
 
-**Terminal 1 - Backend:**
+#### 1. Jalankan Backend
 ```bash
 cd backend
 npm run dev
+# Server berjalan di http://localhost:5000
 ```
-Server akan berjalan di `http://localhost:5000`
 
-**Terminal 2 - Frontend:**
+#### 2. Jalankan Frontend (Terminal Baru)
 ```bash
 cd frontend
 npm run dev
+# Aplikasi berjalan di http://localhost:5173
 ```
-Aplikasi akan berjalan di `http://localhost:8080` (sesuai vite.config.ts)
 
 ### Production Mode
 
-**Backend:**
+#### 1. Build Frontend
+```bash
+cd frontend
+npm run build
+# Output: frontend/dist/
+```
+
+#### 2. Jalankan Backend Production
 ```bash
 cd backend
 npm start
 ```
 
-**Frontend:**
+### Akses Aplikasi
+
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:5000
+- **API Health Check**: http://localhost:5000/api/health
+
+## 🌐 Deployment ke VPS/Cloud
+
+### Opsi 1: Deployment ke VPS (Ubuntu/Debian)
+
+#### 1. Persiapan Server
+
+```bash
+# Update sistem
+sudo apt update && sudo apt upgrade -y
+
+# Install Node.js 18+
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+
+# Install MongoDB
+wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+sudo apt update
+sudo apt install -y mongodb-org
+sudo systemctl start mongod
+sudo systemctl enable mongod
+
+# Install Nginx
+sudo apt install -y nginx
+
+# Install PM2 (Process Manager)
+sudo npm install -g pm2
+```
+
+#### 2. Clone dan Setup Aplikasi
+
+```bash
+# Clone repository
+cd /var/www
+sudo git clone https://github.com/yazidzky/BlueOcean-main.git
+cd BlueOcean-main
+
+# Setup Backend
+cd backend
+sudo npm install --production
+sudo cp .env.example .env
+sudo nano .env  # Edit konfigurasi
+
+# Setup Frontend
+cd ../frontend
+sudo npm install
+sudo npm run build
+```
+
+#### 3. Konfigurasi PM2
+
+Buat file `ecosystem.config.js` di root project:
+
+```javascript
+module.exports = {
+  apps: [
+    {
+      name: 'blueocean-backend',
+      cwd: '/var/www/BlueOcean-main/backend',
+      script: 'server.js',
+      instances: 2,
+      exec_mode: 'cluster',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 5000
+      },
+      error_file: '/var/log/pm2/blueocean-backend-error.log',
+      out_file: '/var/log/pm2/blueocean-backend-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z'
+    }
+  ]
+};
+```
+
+Jalankan dengan PM2:
+```bash
+cd /var/www/BlueOcean-main
+pm2 start ecosystem.config.js
+pm2 save
+pm2 startup
+```
+
+#### 4. Konfigurasi Nginx
+
+Buat file konfigurasi `/etc/nginx/sites-available/blueocean`:
+
+```nginx
+# Backend API
+server {
+    listen 80;
+    server_name api.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # WebSocket support
+    location /socket.io/ {
+        proxy_pass http://localhost:5000/socket.io/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+# Frontend
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    root /var/www/BlueOcean-main/frontend/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Service Worker - no cache
+    location = /sw.js {
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        expires 0;
+    }
+
+    # Manifest
+    location = /manifest.webmanifest {
+        add_header Content-Type application/manifest+json;
+    }
+}
+```
+
+Aktifkan konfigurasi:
+```bash
+sudo ln -s /etc/nginx/sites-available/blueocean /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+#### 5. Setup SSL dengan Let's Encrypt
+
+```bash
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com -d api.yourdomain.com
+```
+
+#### 6. Setup Firewall
+
+```bash
+sudo ufw allow 'Nginx Full'
+sudo ufw allow OpenSSH
+sudo ufw enable
+```
+
+### Opsi 2: Deployment ke Vercel (Frontend) + Railway/Render (Backend)
+
+#### Frontend ke Vercel
+
+1. **Install Vercel CLI**
+```bash
+npm install -g vercel
+```
+
+2. **Deploy Frontend**
 ```bash
 cd frontend
-npm run build
-npm run preview
+vercel --prod
 ```
 
----
-
-## 📡 API Documentation
-
-### Base URL
+3. **Konfigurasi `vercel.json`** (sudah ada di project):
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
+  ]
+}
 ```
-Development: http://localhost:5000/api
-Production: https://your-domain.com/api
+
+#### Backend ke Railway
+
+1. **Buat akun di** [Railway.app](https://railway.app)
+2. **Connect GitHub repository**
+3. **Add MongoDB database** dari Railway marketplace
+4. **Set environment variables** di Railway dashboard
+5. **Deploy** otomatis dari GitHub
+
+#### Backend ke Render
+
+1. **Buat akun di** [Render.com](https://render.com)
+2. **New Web Service** → Connect repository
+3. **Build Command**: `cd backend && npm install`
+4. **Start Command**: `cd backend && npm start`
+5. **Add environment variables**
+6. **Add MongoDB** dari Render (atau gunakan MongoDB Atlas)
+
+### Opsi 3: Deployment ke Docker
+
+#### 1. Buat `Dockerfile` untuk Backend
+
+```dockerfile
+# backend/Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+
+EXPOSE 5000
+
+CMD ["node", "server.js"]
 ```
 
-### Authentication Endpoints
+#### 2. Buat `Dockerfile` untuk Frontend
 
-#### 1. Register User
-```http
+```dockerfile
+# frontend/Dockerfile
+FROM node:18-alpine as build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+#### 3. Buat `docker-compose.yml`
+
+```yaml
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: blueocean-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: oceanbluee
+
+  backend:
+    build: ./backend
+    container_name: blueocean-backend
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://mongodb:27017/oceanbluee
+      JWT_SECRET: ${JWT_SECRET}
+      CLIENT_URL: ${CLIENT_URL}
+
+  frontend:
+    build: ./frontend
+    container_name: blueocean-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:
+```
+
+#### 4. Deploy dengan Docker
+
+```bash
+# Build dan jalankan
+docker-compose up -d
+
+# Lihat logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
+
+# Rebuild
+docker-compose up -d --build
+```
+
+## 💾 Struktur Database
+
+### Users Collection
+
+```javascript
+{
+  _id: ObjectId,
+  name: String,              // Nama pengguna
+  email: String,             // Email (unique)
+  password: String,          // Hashed password
+  avatar: String,            // URL avatar
+  status: String,            // 'online' | 'offline' | 'away'
+  bio: String,               // Bio pengguna
+  interests: [String],       // Array minat
+  points: Number,            // Total poin
+  streakDays: Number,        // Hari berturut-turut aktif
+  lastLoginAt: Date,         // Terakhir login
+  friends: [ObjectId],       // Array ID teman
+  friendRequests: [{
+    from: ObjectId,          // ID pengirim
+    status: String,          // 'pending' | 'accepted' | 'rejected'
+    createdAt: Date
+  }],
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Tasks Collection
+
+```javascript
+{
+  _id: ObjectId,
+  user: ObjectId,            // Ref ke Users
+  title: String,             // Judul tugas
+  description: String,       // Deskripsi tugas
+  completed: Boolean,        // Status selesai
+  priority: String,          // 'low' | 'medium' | 'high'
+  dueDate: Date,             // Tanggal jatuh tempo
+  createdAt: Date,
+  updatedAt: Date
+}
+
+// Indexes
+{ user: 1, completed: 1 }
+{ user: 1, dueDate: 1 }
+```
+
+### Chats Collection
+
+```javascript
+{
+  _id: ObjectId,
+  participants: [ObjectId],  // Array 2 user IDs
+  messages: [{
+    sender: ObjectId,        // Ref ke Users
+    content: String,         // Isi pesan
+    read: Boolean,           // Status dibaca
+    createdAt: Date
+  }],
+  lastMessage: {
+    content: String,
+    sender: ObjectId,
+    createdAt: Date
+  },
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+## 🔌 API Endpoints
+
+### Authentication
+
+```
+POST   /api/auth/register          - Registrasi pengguna baru
+POST   /api/auth/login             - Login pengguna
+GET    /api/auth/me                - Get profil pengguna saat ini (protected)
+```
+
+### Users
+
+```
+GET    /api/users                  - Get semua pengguna (protected)
+GET    /api/users/:id              - Get detail pengguna (protected)
+PUT    /api/users/:id              - Update profil pengguna (protected)
+DELETE /api/users/:id              - Hapus pengguna (protected)
+GET    /api/users/search?q=query   - Cari pengguna (protected)
+```
+
+### Tasks
+
+```
+GET    /api/tasks                  - Get semua tugas user (protected)
+POST   /api/tasks                  - Buat tugas baru (protected)
+GET    /api/tasks/:id              - Get detail tugas (protected)
+PUT    /api/tasks/:id              - Update tugas (protected)
+DELETE /api/tasks/:id              - Hapus tugas (protected)
+PATCH  /api/tasks/:id/complete     - Toggle status selesai (protected)
+```
+
+### Friends
+
+```
+GET    /api/friends                - Get daftar teman (protected)
+POST   /api/friends/request        - Kirim permintaan teman (protected)
+PUT    /api/friends/accept/:id     - Terima permintaan teman (protected)
+PUT    /api/friends/reject/:id     - Tolak permintaan teman (protected)
+DELETE /api/friends/:id            - Hapus teman (protected)
+GET    /api/friends/requests       - Get permintaan teman pending (protected)
+```
+
+### Chats
+
+```
+GET    /api/chats                  - Get semua chat user (protected)
+POST   /api/chats                  - Buat chat baru (protected)
+GET    /api/chats/:id              - Get detail chat (protected)
+POST   /api/chats/:id/messages     - Kirim pesan (protected)
+PUT    /api/chats/:id/read         - Tandai pesan dibaca (protected)
+DELETE /api/chats/:id              - Hapus chat (protected)
+```
+
+### Stats
+
+```
+GET    /api/stats                  - Get statistik user (protected)
+GET    /api/stats/leaderboard      - Get leaderboard (protected)
+```
+
+### Health Check
+
+```
+GET    /api/health                 - Status server
+GET    /                           - Info API routes
+```
+
+### Request/Response Examples
+
+#### Register
+```bash
 POST /api/auth/register
 Content-Type: application/json
 
@@ -541,24 +775,24 @@ Content-Type: application/json
   "password": "password123"
 }
 
-Response 201:
+# Response
 {
   "success": true,
-  "user": {
-    "_id": "...",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "avatar": "...",
-    "status": "offline",
-    "points": 0,
-    "streakDays": 0
-  },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "data": {
+    "user": {
+      "_id": "...",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "avatar": "...",
+      "status": "offline"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIs..."
+  }
 }
 ```
 
-#### 2. Login User
-```http
+#### Login
+```bash
 POST /api/auth/login
 Content-Type: application/json
 
@@ -567,924 +801,145 @@ Content-Type: application/json
   "password": "password123"
 }
 
-Response 200:
+# Response
 {
   "success": true,
-  "user": { ... },
-  "token": "..."
+  "data": {
+    "user": { ... },
+    "token": "eyJhbGciOiJIUzI1NiIs..."
+  }
 }
 ```
 
-#### 3. Get Current User
-```http
-GET /api/auth/me
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "user": { ... }
-}
-```
-
-### User Endpoints
-
-#### 1. Get All Users
-```http
-GET /api/users
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "users": [...]
-}
-```
-
-#### 2. Get User by ID
-```http
-GET /api/users/:id
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "user": { ... }
-}
-```
-
-#### 3. Update User Profile
-```http
-PUT /api/users/:id
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "name": "John Updated",
-  "bio": "New bio",
-  "interests": ["coding", "gaming"]
-}
-
-Response 200:
-{
-  "success": true,
-  "user": { ... }
-}
-```
-
-#### 4. Update User Status
-```http
-PUT /api/users/:id/status
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "status": "online"
-}
-
-Response 200:
-{
-  "success": true,
-  "user": { ... }
-}
-```
-
-### Task Endpoints
-
-#### 1. Get All Tasks
-```http
-GET /api/tasks
-Authorization: Bearer <token>
-Query Parameters:
-  - completed: boolean (optional)
-  - priority: string (optional)
-
-Response 200:
-{
-  "success": true,
-  "tasks": [...]
-}
-```
-
-#### 2. Create Task
-```http
+#### Create Task
+```bash
 POST /api/tasks
-Authorization: Bearer <token>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 Content-Type: application/json
 
 {
-  "title": "Complete project",
-  "description": "Finish the BlueOcean app",
+  "title": "Complete project documentation",
+  "description": "Write comprehensive README",
   "priority": "high",
   "dueDate": "2024-12-31"
 }
 
-Response 201:
+# Response
 {
   "success": true,
-  "task": { ... }
-}
-```
-
-#### 3. Update Task
-```http
-PUT /api/tasks/:id
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "title": "Updated title",
-  "completed": true
-}
-
-Response 200:
-{
-  "success": true,
-  "task": { ... }
-}
-```
-
-#### 4. Delete Task
-```http
-DELETE /api/tasks/:id
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "message": "Task deleted"
-}
-```
-
-#### 5. Toggle Task Completion
-```http
-PATCH /api/tasks/:id/toggle
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "task": { ... }
-}
-```
-
-### Friend Endpoints
-
-#### 1. Send Friend Request
-```http
-POST /api/friends/request
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "userId": "target_user_id"
-}
-
-Response 200:
-{
-  "success": true,
-  "message": "Friend request sent"
-}
-```
-
-#### 2. Accept Friend Request
-```http
-POST /api/friends/accept
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "userId": "requester_user_id"
-}
-
-Response 200:
-{
-  "success": true,
-  "message": "Friend request accepted"
-}
-```
-
-#### 3. Reject Friend Request
-```http
-POST /api/friends/reject
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "userId": "requester_user_id"
-}
-
-Response 200:
-{
-  "success": true,
-  "message": "Friend request rejected"
-}
-```
-
-#### 4. Remove Friend
-```http
-DELETE /api/friends/:friendId
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "message": "Friend removed"
-}
-```
-
-### Chat Endpoints
-
-#### 1. Get Chat History
-```http
-GET /api/chats/:userId
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "chats": [...]
-}
-```
-
-#### 2. Send Message
-```http
-POST /api/chats
-Authorization: Bearer <token>
-Content-Type: application/json
-
-{
-  "receiverId": "receiver_user_id",
-  "message": "Hello!"
-}
-
-Response 201:
-{
-  "success": true,
-  "chat": { ... }
-}
-```
-
-### Statistics Endpoints
-
-#### 1. Get User Statistics
-```http
-GET /api/stats
-Authorization: Bearer <token>
-
-Response 200:
-{
-  "success": true,
-  "stats": {
-    "totalTasks": 50,
-    "completedTasks": 35,
-    "pendingTasks": 15,
-    "completionRate": 70,
-    "totalFriends": 12,
-    "points": 350,
-    "streakDays": 7
+  "data": {
+    "_id": "...",
+    "title": "Complete project documentation",
+    "description": "Write comprehensive README",
+    "priority": "high",
+    "dueDate": "2024-12-31T00:00:00.000Z",
+    "completed": false,
+    "user": "...",
+    "createdAt": "...",
+    "updatedAt": "..."
   }
 }
 ```
 
----
+## 🔌 WebSocket Events
 
-## 🔌 Socket.IO Events
+### Client → Server
 
-### Client → Server Events
-
-#### 1. Join Room
 ```javascript
-socket.emit('join', { userId: 'user_id' });
-```
-Bergabung ke room personal untuk menerima notifikasi
-
-#### 2. Send Message
-```javascript
-socket.emit('sendMessage', {
-  senderId: 'sender_id',
-  receiverId: 'receiver_id',
-  message: 'Hello!'
-});
-```
-
-#### 3. Typing Indicator
-```javascript
+// Typing indicator
 socket.emit('typing', {
-  senderId: 'sender_id',
-  receiverId: 'receiver_id'
+  recipientId: 'user_id',
+  chatId: 'chat_id'
+});
+
+socket.emit('stop_typing', {
+  recipientId: 'user_id',
+  chatId: 'chat_id'
 });
 ```
 
-#### 4. Stop Typing
+### Server → Client
+
 ```javascript
-socket.emit('stopTyping', {
-  senderId: 'sender_id',
-  receiverId: 'receiver_id'
+// User status changes
+socket.on('user_status', (data) => {
+  console.log(data); // { userId: '...', status: 'online' }
+});
+
+// Typing indicators
+socket.on('user_typing', (data) => {
+  console.log(data); // { userId: '...', chatId: '...' }
+});
+
+socket.on('user_stop_typing', (data) => {
+  console.log(data); // { userId: '...', chatId: '...' }
+});
+
+// New message
+socket.on('new_message', (data) => {
+  console.log(data); // { chatId: '...', message: {...} }
 });
 ```
 
-### Server → Client Events
-
-#### 1. Receive Message
-```javascript
-socket.on('receiveMessage', (data) => {
-  // data: { _id, sender, receiver, message, createdAt }
-  console.log('New message:', data);
-});
-```
-
-#### 2. User Status Change
-```javascript
-socket.on('userStatusChange', (data) => {
-  // data: { userId, status: 'online' | 'offline' | 'away' }
-  console.log('User status changed:', data);
-});
-```
-
-#### 3. Typing Event
-```javascript
-socket.on('typing', (data) => {
-  // data: { senderId }
-  console.log('User is typing:', data.senderId);
-});
-```
-
-#### 4. Stop Typing Event
-```javascript
-socket.on('stopTyping', (data) => {
-  // data: { senderId }
-  console.log('User stopped typing:', data.senderId);
-});
-```
-
-### Socket.IO Connection Example
+### Connection Example
 
 ```javascript
 import io from 'socket.io-client';
 
-const socket = io(process.env.VITE_SOCKET_URL, {
+const socket = io('http://localhost:5000', {
   auth: {
-    token: localStorage.getItem('token')
+    token: 'your_jwt_token_here'
   }
 });
 
-// Join user room
-socket.emit('join', { userId: currentUser._id });
-
-// Listen for messages
-socket.on('receiveMessage', (message) => {
-  // Update chat UI
+socket.on('connect', () => {
+  console.log('Connected to server');
 });
 
-// Send message
-const sendMessage = (receiverId, text) => {
-  socket.emit('sendMessage', {
-    senderId: currentUser._id,
-    receiverId,
-    message: text
-  });
-};
-```
-
----
-
-## 📱 Fitur PWA (Progressive Web App)
-
-### Status PWA
-⚠️ **Catatan**: Aplikasi ini saat ini **belum mengimplementasikan fitur PWA secara penuh**. Untuk mengaktifkan PWA, diperlukan konfigurasi tambahan.
-
-### Cara Mengaktifkan PWA
-
-#### 1. Install Plugin Vite PWA
-
-```bash
-cd frontend
-npm install vite-plugin-pwa -D
-```
-
-#### 2. Update vite.config.ts
-
-```typescript
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
-import path from 'path';
-
-export default defineConfig({
-  server: {
-    host: '::',
-    port: 8080,
-  },
-  plugins: [
-    react(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
-      manifest: {
-        name: 'BlueOcean - Task Management',
-        short_name: 'BlueOcean',
-        description: 'Aplikasi manajemen tugas dengan fitur jejaring sosial',
-        theme_color: '#3b82f6',
-        background_color: '#ffffff',
-        display: 'standalone',
-        scope: '/',
-        start_url: '/',
-        icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ]
-      },
-      workbox: {
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/api\./i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'api-cache',
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 // 24 hours
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          }
-        ]
-      }
-    })
-  ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
+socket.on('disconnect', () => {
+  console.log('Disconnected from server');
 });
 ```
 
-#### 3. Buat Icon PWA
+## 📱 PWA Features
 
-Buat icon dengan ukuran berikut di folder `public/`:
-- `pwa-192x192.png` (192x192 pixels)
-- `pwa-512x512.png` (512x512 pixels)
-- `apple-touch-icon.png` (180x180 pixels)
-- `favicon.ico` (32x32 pixels)
+### Service Worker
 
-#### 4. Update index.html
+Service Worker di `frontend/public/sw.js` menyediakan:
 
-```html
-<!doctype html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#3b82f6" />
-    <meta name="description" content="Aplikasi manajemen tugas dengan fitur jejaring sosial" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    
-    <title>BlueOcean - Task Management</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-```
+1. **Caching Strategy**
+   - Core assets (HTML, CSS, JS, images)
+   - API responses
+   - Navigation requests
 
-#### 5. Fitur PWA yang Akan Aktif
+2. **Offline Support**
+   - Fallback ke cache saat offline
+   - Queue requests untuk sync nanti
 
-Setelah konfigurasi di atas, aplikasi akan memiliki:
-- ✅ **Install ke Home Screen**: Pengguna bisa install aplikasi di device
-- ✅ **Offline Support**: Aplikasi tetap bisa diakses tanpa internet
-- ✅ **Service Worker**: Caching otomatis untuk performa lebih baik
-- ✅ **Push Notifications**: (Perlu konfigurasi tambahan)
-- ✅ **Background Sync**: (Perlu konfigurasi tambahan)
+3. **Background Sync**
+   - Sync data saat koneksi kembali
+   - Retry failed requests
 
----
+4. **Push Notifications**
+   - Notifikasi pesan baru
+   - Notifikasi tugas jatuh tempo
 
-## 🌐 Deployment
+### Manifest
 
-### Deployment Backend
+File `manifest.webmanifest` mendefinisikan:
+- Nama aplikasi
+- Icons (192x192, 512x512)
+- Theme color
+- Display mode (standalone)
+- Start URL
 
-#### Opsi 1: Railway
+### Install Prompt
 
-1. **Buat akun di [Railway](https://railway.app/)**
-
-2. **Deploy dari GitHub:**
-   ```bash
-   # Push code ke GitHub
-   git push origin main
-   
-   # Di Railway dashboard:
-   # - New Project → Deploy from GitHub
-   # - Pilih repository BlueOcean-main
-   # - Railway akan auto-detect Node.js
-   ```
-
-3. **Set Environment Variables:**
-   ```
-   NODE_ENV=production
-   MONGODB_URI=mongodb+srv://...
-   JWT_SECRET=...
-   CLIENT_URL=https://your-frontend.vercel.app
-   ALLOWED_ORIGINS=https://your-frontend.vercel.app
-   ```
-
-4. **Deploy:**
-   Railway akan otomatis build dan deploy
-
-#### Opsi 2: Render
-
-1. **Buat akun di [Render](https://render.com/)**
-
-2. **Create New Web Service:**
-   - Connect GitHub repository
-   - Build Command: `cd backend && npm install`
-   - Start Command: `cd backend && npm start`
-
-3. **Set Environment Variables** (sama seperti Railway)
-
-4. **Deploy**
-
-#### Opsi 3: Heroku
-
-```bash
-# Install Heroku CLI
-npm install -g heroku
-
-# Login
-heroku login
-
-# Create app
-heroku create blueocean-backend
-
-# Set environment variables
-heroku config:set NODE_ENV=production
-heroku config:set MONGODB_URI=...
-heroku config:set JWT_SECRET=...
-
-# Deploy
-git subtree push --prefix backend heroku main
-```
-
-#### Opsi 4: VPS (DigitalOcean, AWS EC2, Linode)
-
-```bash
-# SSH ke VPS
-ssh root@your-vps-ip
-
-# Install Node.js
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# Install PM2
-npm install -g pm2
-
-# Clone repository
-git clone https://github.com/yazidzky/BlueOcean-main.git
-cd BlueOcean-main/backend
-
-# Install dependencies
-npm install
-
-# Create .env file
-nano .env
-# (paste your environment variables)
-
-# Start with PM2
-pm2 start server.js --name blueocean-backend
-
-# Setup PM2 startup
-pm2 startup
-pm2 save
-
-# Setup Nginx reverse proxy
-sudo apt install nginx
-sudo nano /etc/nginx/sites-available/blueocean
-
-# Nginx config:
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    location / {
-        proxy_pass http://localhost:5000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-
-# Enable site
-sudo ln -s /etc/nginx/sites-available/blueocean /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
-
-# Setup SSL with Let's Encrypt
-sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d your-domain.com
-```
-
-### Deployment Frontend
-
-#### Opsi 1: Vercel (Recommended)
-
-1. **Install Vercel CLI:**
-   ```bash
-   npm install -g vercel
-   ```
-
-2. **Deploy:**
-   ```bash
-   cd frontend
-   vercel
-   ```
-
-3. **Set Environment Variables di Vercel Dashboard:**
-   ```
-   VITE_API_URL=https://your-backend.railway.app/api
-   VITE_SOCKET_URL=https://your-backend.railway.app
-   ```
-
-4. **Production Deploy:**
-   ```bash
-   vercel --prod
-   ```
-
-#### Opsi 2: Netlify
-
-1. **Build aplikasi:**
-   ```bash
-   cd frontend
-   npm run build
-   ```
-
-2. **Deploy ke Netlify:**
-   - Drag & drop folder `dist` ke [Netlify Drop](https://app.netlify.com/drop)
-   - Atau gunakan Netlify CLI:
-   ```bash
-   npm install -g netlify-cli
-   netlify deploy --prod --dir=dist
-   ```
-
-#### Opsi 3: GitHub Pages
-
-```bash
-# Install gh-pages
-npm install -g gh-pages
-
-# Build
-npm run build
-
-# Deploy
-gh-pages -d dist
-```
-
-### Checklist Deployment
-
-- [ ] MongoDB Atlas setup dan connection string
-- [ ] Environment variables configured
-- [ ] CORS origins updated untuk production URLs
-- [ ] JWT secret yang kuat untuk production
-- [ ] SSL/HTTPS enabled
-- [ ] Domain name configured (optional)
-- [ ] Monitoring setup (optional)
-- [ ] Backup strategy (optional)
-
----
-
-## 👨‍💻 Panduan Pengembangan
-
-### Menambahkan Fitur Baru
-
-#### 1. Backend API Endpoint
-
-**Langkah 1: Buat Model (jika perlu)**
-```javascript
-// backend/models/NewFeature.model.js
-import mongoose from 'mongoose';
-
-const newFeatureSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  // ... fields lainnya
-}, {
-  timestamps: true
-});
-
-export default mongoose.model('NewFeature', newFeatureSchema);
-```
-
-**Langkah 2: Buat Controller**
-```javascript
-// backend/controllers/newFeature.controller.js
-import NewFeature from '../models/NewFeature.model.js';
-
-export const getFeatures = async (req, res) => {
-  try {
-    const features = await NewFeature.find({ user: req.user._id });
-    res.json({ success: true, features });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const createFeature = async (req, res) => {
-  // ... implementation
-};
-```
-
-**Langkah 3: Buat Routes**
-```javascript
-// backend/routes/newFeature.routes.js
-import express from 'express';
-import { protect } from '../middleware/auth.middleware.js';
-import { getFeatures, createFeature } from '../controllers/newFeature.controller.js';
-
-const router = express.Router();
-
-router.route('/')
-  .get(protect, getFeatures)
-  .post(protect, createFeature);
-
-export default router;
-```
-
-**Langkah 4: Register Routes di server.js**
-```javascript
-import newFeatureRoutes from './routes/newFeature.routes.js';
-app.use('/api/newfeature', newFeatureRoutes);
-```
-
-#### 2. Frontend Component
-
-**Langkah 1: Buat API Service**
-```typescript
-// frontend/src/lib/api.ts
-export const newFeatureAPI = {
-  getAll: () => api.get('/newfeature'),
-  create: (data) => api.post('/newfeature', data),
-  // ... methods lainnya
-};
-```
-
-**Langkah 2: Buat Component**
-```typescript
-// frontend/src/components/NewFeature.tsx
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { newFeatureAPI } from '@/lib/api';
-
-export const NewFeature = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['newfeature'],
-    queryFn: newFeatureAPI.getAll
-  });
-
-  const createMutation = useMutation({
-    mutationFn: newFeatureAPI.create,
-    onSuccess: () => {
-      // Refetch data
-    }
-  });
-
-  // ... component logic
-};
-```
-
-**Langkah 3: Tambahkan Route**
-```typescript
-// frontend/src/App.tsx
-<Route path="/newfeature" element={<NewFeature />} />
-```
-
-### Code Style Guidelines
-
-#### Backend (JavaScript)
-
-```javascript
-// ✅ Good
-export const getUserTasks = async (req, res) => {
-  try {
-    const tasks = await Task.find({ user: req.user._id })
-      .sort({ createdAt: -1 })
-      .limit(10);
-    
-    res.json({ 
-      success: true, 
-      tasks 
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false, 
-      message: error.message 
-    });
-  }
-};
-
-// ❌ Bad
-export const getUserTasks = async (req,res) => {
-try{
-const tasks=await Task.find({user:req.user._id}).sort({createdAt:-1}).limit(10)
-res.json({success:true,tasks})
-}catch(error){
-res.status(500).json({success:false,message:error.message})
-}
-}
-```
-
-#### Frontend (TypeScript + React)
-
-```typescript
-// ✅ Good
-interface TaskProps {
-  task: Task;
-  onComplete: (id: string) => void;
-}
-
-export const TaskCard: React.FC<TaskProps> = ({ task, onComplete }) => {
-  const handleComplete = () => {
-    onComplete(task._id);
-  };
-
-  return (
-    <div className="task-card">
-      <h3>{task.title}</h3>
-      <button onClick={handleComplete}>Complete</button>
-    </div>
-  );
-};
-
-// ❌ Bad
-export const TaskCard = (props) => {
-  return <div className="task-card">
-    <h3>{props.task.title}</h3>
-    <button onClick={()=>props.onComplete(props.task._id)}>Complete</button>
-  </div>
-}
-```
-
-### Git Workflow
-
-```bash
-# 1. Buat branch baru untuk fitur
-git checkout -b feature/new-feature-name
-
-# 2. Commit changes dengan pesan yang jelas
-git add .
-git commit -m "feat: add new feature description"
-
-# 3. Push ke remote
-git push origin feature/new-feature-name
-
-# 4. Buat Pull Request di GitHub
-
-# 5. Setelah review, merge ke main
-git checkout main
-git pull origin main
-git merge feature/new-feature-name
-git push origin main
-
-# 6. Hapus branch lokal
-git branch -d feature/new-feature-name
-```
-
-### Commit Message Convention
-
-```
-feat: menambahkan fitur baru
-fix: memperbaiki bug
-docs: update dokumentasi
-style: perubahan formatting
-refactor: refactoring code
-test: menambahkan test
-chore: update dependencies
-```
-
----
+Aplikasi dapat diinstall sebagai PWA di:
+- ✅ Chrome/Edge (Desktop & Mobile)
+- ✅ Safari (iOS)
+- ✅ Firefox (Desktop)
+- ✅ Samsung Internet
 
 ## 🧪 Testing
 
@@ -1493,44 +948,14 @@ chore: update dependencies
 ```bash
 cd backend
 
-# Install testing dependencies
-npm install --save-dev jest supertest
+# Unit tests
+npm test
 
-# Buat test file
-# backend/tests/auth.test.js
-```
+# Integration tests
+npm run test:integration
 
-**Contoh Test:**
-```javascript
-import request from 'supertest';
-import app from '../server.js';
-
-describe('Auth API', () => {
-  it('should register a new user', async () => {
-    const res = await request(app)
-      .post('/api/auth/register')
-      .send({
-        name: 'Test User',
-        email: 'test@example.com',
-        password: 'password123'
-      });
-    
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('token');
-  });
-
-  it('should login existing user', async () => {
-    const res = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'test@example.com',
-        password: 'password123'
-      });
-    
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('token');
-  });
-});
+# Coverage
+npm run test:coverage
 ```
 
 ### Frontend Testing
@@ -1538,332 +963,218 @@ describe('Auth API', () => {
 ```bash
 cd frontend
 
-# Install testing dependencies
-npm install --save-dev @testing-library/react @testing-library/jest-dom vitest
-```
-
-**Contoh Test:**
-```typescript
-import { render, screen } from '@testing-library/react';
-import { TaskCard } from '@/components/TaskCard';
-
-describe('TaskCard', () => {
-  it('renders task title', () => {
-    const task = {
-      _id: '1',
-      title: 'Test Task',
-      completed: false
-    };
-    
-    render(<TaskCard task={task} onComplete={() => {}} />);
-    expect(screen.getByText('Test Task')).toBeInTheDocument();
-  });
-});
-```
-
-### Run Tests
-
-```bash
-# Backend
-cd backend
+# Unit tests
 npm test
 
-# Frontend
-cd frontend
-npm run test
+# E2E tests
+npm run test:e2e
+
+# Coverage
+npm run test:coverage
 ```
 
----
+### Manual Testing Checklist
+
+- [ ] Registrasi pengguna baru
+- [ ] Login dengan kredensial valid
+- [ ] Buat, edit, hapus tugas
+- [ ] Kirim permintaan teman
+- [ ] Terima/tolak permintaan teman
+- [ ] Kirim pesan chat
+- [ ] Real-time typing indicator
+- [ ] Status online/offline
+- [ ] Offline mode (disconnect internet)
+- [ ] Install sebagai PWA
+- [ ] Push notifications
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+### Backend Issues
 
-#### 1. MongoDB Connection Error
-
-**Error:**
+#### MongoDB Connection Error
 ```
-MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+Error: connect ECONNREFUSED 127.0.0.1:27017
 ```
+**Solusi:**
+- Pastikan MongoDB berjalan: `sudo systemctl start mongod`
+- Cek connection string di `.env`
+- Gunakan MongoDB Atlas jika MongoDB lokal bermasalah
 
-**Solution:**
+#### JWT Token Error
+```
+Error: jwt malformed
+```
+**Solusi:**
+- Pastikan `JWT_SECRET` di `.env` sudah diset
+- Clear localStorage di browser
+- Login ulang
+
+#### CORS Error
+```
+Access to XMLHttpRequest blocked by CORS policy
+```
+**Solusi:**
+- Tambahkan frontend URL ke `ALLOWED_ORIGINS` di backend `.env`
+- Pastikan `CLIENT_URL` sudah benar
+
+### Frontend Issues
+
+#### Vite Build Error
+```
+Error: Cannot find module
+```
+**Solusi:**
 ```bash
-# Pastikan MongoDB service berjalan
-sudo systemctl status mongod
-
-# Jika tidak berjalan, start service
-sudo systemctl start mongod
-
-# Atau cek connection string di .env
-MONGODB_URI=mongodb://localhost:27017/blueocean
+rm -rf node_modules package-lock.json
+npm install
 ```
 
-#### 2. CORS Error
-
-**Error:**
-```
-Access to XMLHttpRequest has been blocked by CORS policy
-```
-
-**Solution:**
-```javascript
-// backend/server.js
-// Pastikan CLIENT_URL di .env sesuai dengan frontend URL
-CLIENT_URL=http://localhost:8080
-
-// Dan ALLOWED_ORIGINS include frontend URL
-ALLOWED_ORIGINS=http://localhost:8080,http://localhost:5173
-```
-
-#### 3. JWT Token Invalid
-
-**Error:**
-```
-JsonWebTokenError: invalid token
-```
-
-**Solution:**
-```javascript
-// Pastikan JWT_SECRET sama di .env
-JWT_SECRET=your_secret_key
-
-// Clear localStorage di browser
-localStorage.removeItem('token');
-
-// Login ulang
-```
-
-#### 4. Socket.IO Connection Failed
-
-**Error:**
+#### WebSocket Connection Failed
 ```
 WebSocket connection failed
 ```
+**Solusi:**
+- Pastikan backend berjalan
+- Cek `VITE_WS_URL` di frontend `.env`
+- Periksa firewall/proxy settings
 
-**Solution:**
-```javascript
-// frontend/.env
-// Pastikan VITE_SOCKET_URL benar
-VITE_SOCKET_URL=http://localhost:5000
+#### PWA Not Installing
+**Solusi:**
+- Pastikan HTTPS aktif (kecuali localhost)
+- Cek `manifest.webmanifest` valid
+- Clear browser cache
+- Pastikan Service Worker registered
 
-// Cek apakah backend server running
-// Cek browser console untuk error details
-```
+### Deployment Issues
 
-#### 5. Port Already in Use
-
-**Error:**
-```
-Error: listen EADDRINUSE: address already in use :::5000
-```
-
-**Solution:**
+#### PM2 App Crashed
 ```bash
-# Linux/Mac
-lsof -i :5000
-kill -9 <PID>
-
-# Windows
-netstat -ano | findstr :5000
-taskkill /PID <PID> /F
-
-# Atau ubah PORT di .env
-PORT=5001
+pm2 logs blueocean-backend --lines 100
 ```
+**Solusi:**
+- Cek logs untuk error spesifik
+- Pastikan environment variables sudah diset
+- Restart: `pm2 restart blueocean-backend`
 
-#### 6. Build Error Frontend
+#### Nginx 502 Bad Gateway
+**Solusi:**
+- Cek backend berjalan: `pm2 status`
+- Cek Nginx config: `sudo nginx -t`
+- Cek logs: `sudo tail -f /var/log/nginx/error.log`
 
-**Error:**
-```
-Module not found: Can't resolve '@/components/...'
-```
+#### MongoDB Out of Memory
+**Solusi:**
+- Tambah swap space
+- Upgrade server RAM
+- Gunakan MongoDB Atlas
 
-**Solution:**
+## 📊 Monitoring & Maintenance
+
+### Monitoring dengan PM2
+
 ```bash
-# Pastikan alias configured di vite.config.ts
-resolve: {
-  alias: {
-    '@': path.resolve(__dirname, './src'),
-  },
+# Status aplikasi
+pm2 status
+
+# Logs real-time
+pm2 logs blueocean-backend
+
+# Monitoring dashboard
+pm2 monit
+
+# Restart aplikasi
+pm2 restart blueocean-backend
+
+# Stop aplikasi
+pm2 stop blueocean-backend
+
+# Delete dari PM2
+pm2 delete blueocean-backend
+```
+
+### Database Backup
+
+```bash
+# Backup MongoDB
+mongodump --uri="mongodb://localhost:27017/oceanbluee" --out=/backup/$(date +%Y%m%d)
+
+# Restore MongoDB
+mongorestore --uri="mongodb://localhost:27017/oceanbluee" /backup/20241208
+```
+
+### Log Rotation
+
+Buat file `/etc/logrotate.d/blueocean`:
+
+```
+/var/log/pm2/*.log {
+    daily
+    rotate 14
+    compress
+    delaycompress
+    notifempty
+    create 0640 www-data www-data
+    sharedscripts
+    postrotate
+        pm2 reloadLogs
+    endscript
 }
-
-# Clear cache dan rebuild
-rm -rf node_modules .vite
-npm install
-npm run build
 ```
 
-### Debug Mode
+## 🔒 Security Best Practices
 
-**Backend Debug:**
-```bash
-# Tambahkan di server.js
-console.log('Environment:', process.env.NODE_ENV);
-console.log('MongoDB URI:', process.env.MONGODB_URI);
-console.log('Port:', process.env.PORT);
-```
+1. **Environment Variables**
+   - Jangan commit file `.env`
+   - Gunakan secrets manager di production
+   - Rotate JWT secret secara berkala
 
-**Frontend Debug:**
-```typescript
-// Tambahkan di main.tsx
-console.log('API URL:', import.meta.env.VITE_API_URL);
-console.log('Socket URL:', import.meta.env.VITE_SOCKET_URL);
-```
+2. **Database**
+   - Enable MongoDB authentication
+   - Gunakan strong passwords
+   - Restrict network access
+   - Regular backups
 
----
+3. **API Security**
+   - Rate limiting
+   - Input validation
+   - SQL injection prevention (Mongoose handles this)
+   - XSS protection
+
+4. **HTTPS**
+   - Always use HTTPS in production
+   - HTTP Strict Transport Security (HSTS)
+   - Secure cookies
+
+5. **Dependencies**
+   - Regular updates: `npm audit`
+   - Fix vulnerabilities: `npm audit fix`
 
 ## 🤝 Kontribusi
 
-Kami sangat menghargai kontribusi dari komunitas! Berikut cara berkontribusi:
+Kontribusi sangat diterima! Silakan ikuti langkah berikut:
 
-### Cara Berkontribusi
+1. Fork repository
+2. Buat branch fitur (`git checkout -b feature/AmazingFeature`)
+3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
+5. Buat Pull Request
 
-1. **Fork Repository**
-   ```bash
-   # Klik tombol "Fork" di GitHub
-   ```
+### Coding Standards
 
-2. **Clone Fork Anda**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/BlueOcean-main.git
-   cd BlueOcean-main
-   ```
-
-3. **Buat Branch Baru**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-
-4. **Buat Perubahan**
-   - Tulis code yang clean dan terdokumentasi
-   - Follow code style guidelines
-   - Tambahkan tests jika applicable
-
-5. **Commit Changes**
-   ```bash
-   git add .
-   git commit -m "feat: add amazing feature"
-   ```
-
-6. **Push ke GitHub**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-
-7. **Buat Pull Request**
-   - Buka repository di GitHub
-   - Klik "New Pull Request"
-   - Jelaskan perubahan yang Anda buat
-   - Submit PR
-
-### Guidelines Kontribusi
-
-- ✅ Follow existing code style
-- ✅ Write clear commit messages
-- ✅ Add tests for new features
-- ✅ Update documentation
-- ✅ Keep PRs focused and small
-- ❌ Don't commit node_modules
-- ❌ Don't commit .env files
-- ❌ Don't break existing functionality
-
-### Code Review Process
-
-1. Maintainer akan review PR Anda
-2. Jika ada feedback, lakukan perubahan yang diminta
-3. Setelah approved, PR akan di-merge
-4. Celebrate! 🎉
-
----
-
-## 📄 Lisensi
-
-Proyek ini dilisensikan di bawah **ISC License**.
-
-```
-ISC License
-
-Copyright (c) 2025 yazidzky
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-```
-
+- Gunakan ESLint untuk linting
+- Follow Airbnb style guide
+- Write meaningful commit messages
+- Add tests untuk fitur baru
+- Update dokumentasi
+  
 ## 🙏 Acknowledgments
 
-Terima kasih kepada:
-
-- **Open Source Community** - Untuk tools dan libraries yang luar biasa
-- **MongoDB** - Database yang powerful dan flexible
-- **React Team** - Untuk library UI yang amazing
-- **Socket.IO** - Untuk real-time communication yang mudah
-- **Vercel** - Untuk platform deployment yang excellent
-- **Semua Kontributor** - Yang telah membantu meningkatkan proyek ini
-
-### Teknologi & Tools yang Digunakan
-
-- [Node.js](https://nodejs.org/) - JavaScript runtime
-- [Express](https://expressjs.com/) - Web framework
-- [MongoDB](https://www.mongodb.com/) - Database
-- [React](https://react.dev/) - UI library
-- [Socket.IO](https://socket.io/) - Real-time engine
-- [TailwindCSS](https://tailwindcss.com/) - CSS framework
-- [Vite](https://vitejs.dev/) - Build tool
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-
----
-
-## 📊 Project Statistics
-
-![GitHub stars](https://img.shields.io/github/stars/yazidzky/BlueOcean-main?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yazidzky/BlueOcean-main?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yazidzky/BlueOcean-main)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yazidzky/BlueOcean-main)
-
----
-
-## 🗺️ Roadmap
-
-### Version 1.1 (Planned)
-- [ ] PWA implementation lengkap
-- [ ] Push notifications
-- [ ] Dark mode
-- [ ] Task categories
-- [ ] File attachments untuk tasks
-
-### Version 1.2 (Future)
-- [ ] Team collaboration features
-- [ ] Calendar integration
-- [ ] Email notifications
-- [ ] Mobile apps (React Native)
-- [ ] Advanced analytics
-
-### Version 2.0 (Long-term)
-- [ ] AI-powered task suggestions
-- [ ] Video call integration
-- [ ] Third-party integrations (Google Calendar, Slack, etc.)
-- [ ] Premium features
-
----
-
-## 📝 Changelog
-
-### Version 1.0.0 (Current)
-- ✅ Initial release
-- ✅ User authentication
-- ✅ Task management
-- ✅ Friend system
-- ✅ Real-time chat
-- ✅ Statistics dashboard
-- ✅ Responsive design
+- [React](https://react.dev/)
+- [Express.js](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Socket.IO](https://socket.io/)
+- [Radix UI](https://www.radix-ui.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vite](https://vitejs.dev/)
 
 ---
