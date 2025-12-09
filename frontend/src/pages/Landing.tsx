@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -17,12 +17,29 @@ export default function Landing() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { theme, setTheme } = useTheme();
+  const [installEvent, setInstallEvent] = useState<any>(null);
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
     }
   }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    const onBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setInstallEvent(e);
+    };
+    const onAppInstalled = () => {
+      setInstallEvent(null);
+    };
+    window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
+    window.addEventListener("appinstalled", onAppInstalled);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
+      window.removeEventListener("appinstalled", onAppInstalled);
+    };
+  }, []);
 
   const features = [
     {
@@ -122,6 +139,20 @@ export default function Landing() {
             >
               Sign In
             </Button>
+            {installEvent && (
+              <Button
+                variant="glass"
+                size="xl"
+                className="w-full sm:w-auto"
+                onClick={async () => {
+                  await installEvent.prompt();
+                  await installEvent.userChoice;
+                  setInstallEvent(null);
+                }}
+              >
+                Install App
+              </Button>
+            )}
           </div>
         </div>
       </section>
