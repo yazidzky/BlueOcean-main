@@ -2,8 +2,6 @@
 
 BlueOcean adalah aplikasi web Progressive Web App (PWA) yang menggabungkan manajemen tugas dengan fitur jejaring sosial. Aplikasi ini memungkinkan pengguna untuk mengelola tugas, berkolaborasi dengan teman, dan berkomunikasi secara real-time.
 
-![BlueOcean Banner](./frontend/public/sea-waves.png)
-
 ## 📋 Daftar Isi
 
 - [Fitur Utama](#-fitur-utama)
