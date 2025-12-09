@@ -21,6 +21,7 @@
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.1",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "web-push": "^3.6.7"
   }
 }

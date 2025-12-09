@@ -100,7 +100,9 @@ self.addEventListener("fetch", (event) => {
           cached ||
           fetch(request).then((response) => {
             const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            if (request.method === "GET") {
+              caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            }
             return response;
           })
         )
@@ -109,16 +111,21 @@ self.addEventListener("fetch", (event) => {
     }
   }
 
-  if (url.pathname.startsWith("/api/")) {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => caches.match(request))
-    );
+  // Only cache same-origin GET /api responses; never cache POST/PUT/PATCH/DELETE
+  if (url.origin === self.location.origin && url.pathname.startsWith("/api/")) {
+    if (request.method === "GET") {
+      event.respondWith(
+        fetch(request)
+          .then((response) => {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            return response;
+          })
+          .catch(() => caches.match(request))
+      );
+    } else {
+      event.respondWith(fetch(request));
+    }
     return;
   }
 });

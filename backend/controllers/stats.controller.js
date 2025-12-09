@@ -6,16 +6,24 @@ export const getStats = async (req, res) => {
     const userId = req.user._id;
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
+    const tomorrowStart = new Date(todayStart);
+    tomorrowStart.setDate(todayStart.getDate() + 1);
     const weekStart = new Date();
     const day = weekStart.getDay();
     const diff = weekStart.getDate() - day + (day === 0 ? -6 : 1);
     weekStart.setDate(diff);
     weekStart.setHours(0, 0, 0, 0);
 
+    const baseOr = [
+      { owner: userId },
+      { user: userId },
+      { collaborators: { $elemMatch: { user: userId, status: "accepted" } } },
+    ];
+
     const [tasksDueToday, tasksDoneToday, tasksPending, friendsCount, chatsCount, me] = await Promise.all([
-      Task.countDocuments({ user: userId, dueDate: { $gte: todayStart }, }),
-      Task.countDocuments({ user: userId, dueDate: { $gte: todayStart }, completed: true }),
-      Task.countDocuments({ user: userId, completed: false }),
+      Task.countDocuments({ $or: baseOr, dueDate: { $gte: todayStart, $lt: tomorrowStart } }),
+      Task.countDocuments({ $or: baseOr, dueDate: { $gte: todayStart, $lt: tomorrowStart }, completed: true }),
+      Task.countDocuments({ $or: baseOr, completed: false }),
       User.countDocuments({ _id: userId, friends: { $exists: true, $type: "array" } }).then(async () => {
         const me = await User.findById(userId).select("friends");
         return me?.friends?.length || 0;
@@ -27,16 +35,16 @@ export const getStats = async (req, res) => {
       User.findById(userId).select("streakDays points"),
     ]);
 
-    const tasksThisWeek = await Task.countDocuments({ user: userId, createdAt: { $gte: weekStart } });
+    const tasksThisWeek = await Task.countDocuments({ $or: baseOr, createdAt: { $gte: weekStart } });
 
-    const completedPriorities = await Task.find({ user: userId, completed: true }).select("priority").lean();
+    const completedPriorities = await Task.find({ $or: baseOr, completed: true }).select("priority").lean();
     const weights = { low: 10, medium: 20, high: 30 };
     const pointsComputed = completedPriorities.reduce((sum, t) => sum + (weights[t.priority] || 0), 0);
 
     res.json({
       tasksDueToday,
       tasksDoneToday,
-      tasksCompleted: await Task.countDocuments({ user: userId, completed: true }),
+      tasksCompleted: await Task.countDocuments({ $or: baseOr, completed: true }),
       tasksPending,
       tasksThisWeek,
       friendsCount,

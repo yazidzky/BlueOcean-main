@@ -6,6 +6,11 @@ import {
   updateTask,
   deleteTask,
   toggleTask,
+  addCollaborator,
+  removeCollaborator,
+  acceptCollaborator,
+  rejectCollaborator,
+  updateCollaboratorRole,
 } from "../controllers/task.controller.js";
 import { protect } from "../middleware/auth.middleware.js";
 
@@ -20,5 +25,10 @@ router
   .delete(protect, deleteTask);
 
 router.patch("/:id/toggle", protect, toggleTask);
+router.post("/:id/collaborators", protect, addCollaborator);
+router.delete("/:id/collaborators/:userId", protect, removeCollaborator);
+router.put("/:id/collaborators/:userId/accept", protect, acceptCollaborator);
+router.put("/:id/collaborators/:userId/reject", protect, rejectCollaborator);
+router.put("/:id/collaborators/:userId/role", protect, updateCollaboratorRole);
 
 export default router;
