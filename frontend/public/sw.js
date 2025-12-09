@@ -1,6 +1,62 @@
 const CACHE_NAME = "blueocean-cache-v1";
 const CORE_ASSETS = ["/", "/index.html", "/manifest.webmanifest", "/vite.svg", "/assets/pwa-192x192.png", "/assets/pwa-512x512.png"];
 
+self.addEventListener("message", (event) => {
+  const data = event.data;
+  if (!data) return;
+  if (data.type === "enqueue") {
+    enqueueRequest(data.payload);
+  }
+});
+
+const DB_NAME = "blueocean-queue";
+const STORE_NAME = "requests";
+
+function openDb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: "id", autoIncrement: true });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function enqueueRequest(payload) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    tx.objectStore(STORE_NAME).add({ ...payload, createdAt: Date.now() });
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function getAllRequests() {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readonly");
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function deleteRequest(id) {
+  const db = await openDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    tx.objectStore(STORE_NAME).delete(id);
+    tx.oncomplete = () => resolve(true);
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
@@ -96,7 +152,29 @@ self.addEventListener("notificationclick", (event) => {
 
 self.addEventListener("sync", (event) => {
   if (event.tag === "blueocean-sync") {
-    event.waitUntil(Promise.resolve());
+    event.waitUntil(
+      (async () => {
+        try {
+          const items = await getAllRequests();
+          for (const item of items) {
+            const { id, url, method = "POST", headers = {}, body } = item;
+            try {
+              const res = await fetch(url, {
+                method,
+                headers,
+                body: body ? JSON.stringify(body) : undefined,
+              });
+              if (res.ok) {
+                await deleteRequest(id);
+              }
+            } catch (e) {
+              // Keep item for next sync
+            }
+          }
+        } catch (e) {
+          // ignore
+        }
+      })()
+    );
   }
 });
-
