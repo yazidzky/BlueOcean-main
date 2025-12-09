@@ -696,7 +696,7 @@ export default function Tasks() {
 
         {/* Collaborator Dialog */}
         <Dialog open={isCollabOpen} onOpenChange={setIsCollabOpen}>
-          <DialogContent className="glass-card border-border/50 w-[92vw] max-w-[640px]">
+          <DialogContent className="glass-card border-border/50 w-[92vw] max-w-[640px] max-h-[80vh] sm:max-h-[85vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="font-heading text-2xl">Manage Collaborators</DialogTitle>
               <DialogDescription>Share this task with friends</DialogDescription>
@@ -711,8 +711,9 @@ export default function Tasks() {
                       placeholder="Search by name or email"
                       value={collabQuery}
                       onChange={(e) => setCollabQuery(e.target.value)}
+                      className="w-full"
                     />
-                    <Button variant="default" onClick={searchCollaborators}>Search</Button>
+                    <Button variant="default" onClick={searchCollaborators} className="w-full sm:w-auto">Search</Button>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -720,12 +721,12 @@ export default function Tasks() {
                     <p className="text-sm text-muted-foreground">No results</p>
                   ) : (
                     collabResults.map((u) => (
-                      <div key={u._id} className="flex items-center justify-between p-2 rounded-md hover:bg-accent/40 flex-wrap gap-2">
+                      <div key={u._id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-2 rounded-md hover:bg-accent/40 gap-2">
                         <div className="text-sm">
                           <div className="font-medium">{u.name}</div>
                           <div className="text-muted-foreground">{u.email}</div>
                         </div>
-                        <Button size="sm" onClick={() => addCollaborator(u._id)}>
+                        <Button size="sm" onClick={() => addCollaborator(u._id)} className="w-full sm:w-auto">
                           Share
                         </Button>
                       </div>
@@ -737,7 +738,7 @@ export default function Tasks() {
                     <Label>Current collaborators</Label>
                     <div className="space-y-2">
                       {selectedTask.collaborators.map((c) => (
-                        <div key={getCollabId(c)} className="flex items-center justify-between p-2 rounded-md border flex-wrap gap-2">
+                        <div key={getCollabId(c)} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-2 rounded-md border gap-2">
                           {getCollabUserObj(c) ? (
                             <>
                               <span className="text-sm text-foreground">{getCollabUserObj(c)?.name}</span>
@@ -746,12 +747,12 @@ export default function Tasks() {
                           ) : (
                             <span className="text-xs text-muted-foreground">{getCollabId(c)}</span>
                           )}
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                             <Badge className="text-xs capitalize">{getCollabStatus(c)}</Badge>
                             <Badge className="text-xs capitalize">{getCollabRole(c)}</Badge>
                           </div>
                           {getOwnerId(selectedTask) === (user?._id || "") && (
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                               <Button size="sm" variant="outline" onClick={async () => {
                                 try {
                                   const res = await api.put(`/tasks/${selectedTask._id}/collaborators/${getCollabId(c)}/role`, { role: "owner" });
@@ -762,7 +763,7 @@ export default function Tasks() {
                                 } catch (error: any) {
                                   toast({ title: "Error", description: error.response?.data?.message || "Failed to update role", variant: "destructive" });
                                 }
-                              }}>Make Owner</Button>
+                              }} className="w-full sm:w-auto">Make Owner</Button>
                               <Button size="sm" variant="outline" onClick={async () => {
                                 try {
                                   const res = await api.put(`/tasks/${selectedTask._id}/collaborators/${getCollabId(c)}/role`, { role: "editor" });
@@ -771,7 +772,7 @@ export default function Tasks() {
                                 } catch (error: any) {
                                   toast({ title: "Error", description: error.response?.data?.message || "Failed to update role", variant: "destructive" });
                                 }
-                              }}>Make Editor</Button>
+                              }} className="w-full sm:w-auto">Make Editor</Button>
                               <Button size="sm" variant="outline" onClick={async () => {
                                 try {
                                   const res = await api.put(`/tasks/${selectedTask._id}/collaborators/${getCollabId(c)}/role`, { role: "viewer" });
@@ -780,10 +781,10 @@ export default function Tasks() {
                                 } catch (error: any) {
                                   toast({ title: "Error", description: error.response?.data?.message || "Failed to update role", variant: "destructive" });
                                 }
-                              }}>Make Viewer</Button>
+                              }} className="w-full sm:w-auto">Make Viewer</Button>
                             </div>
                           )}
-                          <Button variant="ghost" size="sm" onClick={() => removeCollaborator(getCollabId(c))}>
+                          <Button variant="ghost" size="sm" onClick={() => removeCollaborator(getCollabId(c))} className="w-full sm:w-auto">
                             Remove
                           </Button>
                         </div>
@@ -793,9 +794,9 @@ export default function Tasks() {
                 )}
                 {/* Pending invite actions for me */}
                 {selectedTask.collaborators && selectedTask.collaborators.some((c) => getCollabId(c) === user?._id && getCollabStatus(c) === "pending") && (
-                  <div className="flex gap-2">
-                    <Button onClick={() => acceptInvite(selectedTask._id)} variant="default">Accept</Button>
-                    <Button onClick={() => rejectInvite(selectedTask._id)} variant="outline">Reject</Button>
+                  <div className="flex gap-2 flex-wrap">
+                    <Button onClick={() => acceptInvite(selectedTask._id)} variant="default" className="w-full sm:w-auto">Accept</Button>
+                    <Button onClick={() => rejectInvite(selectedTask._id)} variant="outline" className="w-full sm:w-auto">Reject</Button>
                   </div>
                 )}
               </div>
